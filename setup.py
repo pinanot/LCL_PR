@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='lcl',
+    name='LclSymbolicLinking',
     version='0.0.1',
     description='LCL C-ymbolic (C - symbolic) Link-ing (link introduce linking)',
     author='du7ec',
