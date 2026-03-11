@@ -8,7 +8,28 @@ from time import time as __time__
 from random import random as __random__
 from Cython.Build import __cythonize__
 from sys import argv as __program_param__
+from subprocess import run as __shell__
+from os import chdir as __cd__
+from os import getcwd as __pwd__
+from contextlib import contextmanager as __wither__
 
+__all__ = []
+
+__lib_pw__ = hash(str(__time__() + __random__()))
+
+__libsetter__ = __lib__("lcl", __lib_pw__)
+
+del __lib_pw__
+
+@__wither__
+def enter_directory(dir):
+    ret = __pwd__()
+    try:
+        __cd__(dir)
+        yield __pwd__()
+    finally: __cd__(ret)
+
+@(-__libsetter__)
 def effected_cythonize(*argv, **kargv):
     """
     # function effected_cythonize
@@ -28,13 +49,8 @@ def effected_cythonize(*argv, **kargv):
     
     return cythonize(*argv, **kargv)
 
-__all__ = []
+@(-)
 
-__lib_pw__ = hash(str(__time__() + __random__()))
-
-__libsetter__ = __lib__("lcl", __lib_pw__)
-
-del __lib_pw__
 
 @(-__libsetter__)
 def initalize(file):
