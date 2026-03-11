@@ -6,6 +6,27 @@ from os.path import basename as __base_name__
 from PyPInclude import lib as __lib__
 from time import time as __time__
 from random import random as __random__
+from Cython.Build import __cythonize__
+from sys import argv as __program_param__
+
+def effected_cythonize(*argv, **kargv):
+    """
+    # function effected_cythonize
+
+    use side-effect to make setup.py as cythonize builder
+
+    forse the program's parameter as "setup.py build_ext --inplace"
+    
+     - fin - 
+    """
+    
+    L_minus_3 = len(__program_param__) - 3
+    if L_minus_3 < 0:
+        __program_param__.extend(["" for _ in range(-L_minus_3)])
+    __program_param__[1] = "build_ext"
+    __program_param__[2] = "--inplace"
+    
+    return cythonize(*argv, **kargv)
 
 __all__ = []
 
