@@ -49,8 +49,9 @@ def effected_cythonize(*argv, **kargv):
     
     return cythonize(*argv, **kargv)
 
-@(-)
-
+@(-__lib_setter__)
+def run_setup(__file__):
+    with enter_directory(__get_dir__(__file__)) as dirpath: return __shell__(["python", "setup.py"])
 
 @(-__libsetter__)
 def initalize(file):
