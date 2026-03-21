@@ -76,6 +76,8 @@ def initialize_core(file, *, on_pypi_pkg = True):
 def initialize(__file__):
     """
     # function initialize(__file__)
+    
+     - fin -
     """
     
     pass
@@ -85,6 +87,8 @@ def initialize(__file__):
 def init_dir(__file__):
     """
     # function init_dir(__file__)
+    
+     - fin -
     """
     
     pass
@@ -93,60 +97,72 @@ is_same_real_path = lambda x, y : __get_real_path__(x) == __get_real__path(y)
 is_dir_link = lambda x : __is_link__(x) and __is_dir__(x)
 
 @(-__libsetter__)
-def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__)):
-    __PyPInclude__ = __get_dir__(file)
-    if is_dir_link(
-        __lcl__ := __path_join__(
-            __PyPInclude__,
-            "__lcl__"
-        )
-    ) and is_dir_link(
-        pkgname_link := __path_join__(
-            lclpath,
-            pkgname := __base_name__(
-                __PyPInclude__
+def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__), raises = False):
+    """
+    # function get_lcl_project_info(file, *, lclpath = default path, rasies = False)
+    
+     - fin -
+    """
+    if raise:
+        ret = lib.lcl.get_lcl_project_info(file, lclpath = lclpath, raises = False)
+        if type(ret) == tuple: return ret
+        else: raise ret
+    else:
+        __PyPInclude__ = __get_dir__(file)
+        if is_dir_link(
+            __lcl__ := __path_join__(
+                __PyPInclude__,
+                "__lcl__"
             )
-        )
-    ):
-        if is_same_real_path(
-            __PyPInclude__,
-            pkgname_link
-        ) and is_same_real_path(
-            lclpath,
-            __lcl__
-        ): return (pkgname, pkgname_link, __lcl__)
-        else: return NotLclProjectError(f"{pkgname} is not lcl project s.t. installed on lcl")
-    elif __is_dir__(
-        include := __path_join__(
-            __PyPInclude__,
-            "include"
-        )
-    ) and is_dir_link(
-        pkgname_link := __path_join__(
-            lclpath,
-            pkgname := __base_name__(
-                __get_dir__(
+        ) and is_dir_link(
+            pkgname_link := __path_join__(
+                lclpath,
+                pkgname := __base_name__(
                     __PyPInclude__
                 )
             )
-        )
-    ):
-        if is_dir_link(
-            __lcl__ := __path_join__(
-                include,
-                "__lcl__"
-            )
-        ): 
+        ):
             if is_same_real_path(
-                include,
+                __PyPInclude__,
                 pkgname_link
             ) and is_same_real_path(
                 lclpath,
                 __lcl__
-            ): return (pkgname, pkgname_link, __lcl__)
+            ): return pkgname, pkgname_link, __lcl__
             else: return NotLclProjectError(f"{pkgname} is not lcl project s.t. installed on lcl")
-        else: NotLclProjectError(f"{pkgname} is not lcl project s.t. installed on lcl")
+        elif __is_dir__(
+            include := __path_join__(
+                __PyPInclude__,
+                "include"
+            )
+        ) and is_dir_link(
+            pkgname_link := __path_join__(
+                lclpath,
+                pkgname := __base_name__(
+                    __get_dir__(
+                        __PyPInclude__
+                    )
+                )
+            )
+        ):
+            if is_dir_link(
+                __lcl__ := __path_join__(
+                    include,
+                    "__lcl__"
+                )
+            ): 
+                if is_same_real_path(
+                    include,
+                    pkgname_link
+                ) and is_same_real_path(
+                    lclpath,
+                    __lcl__
+                ): return pkgname, pkgname_link, __lcl__
+                else: return NotLclProjectError(f"{pkgname} is not lcl project s.t. installed on lcl")
+            else: NotLclProjectError(f"{pkgname} is not lcl project s.t. installed on lcl")
     else: return NotLclProjectError(f"{file} is not in lcl project")
 
 @-__libsetter__
-def 
+def uninstall_lclproject(file, *, lclpath = __get_dir__(__file__)):
+    pkgname, pkgname_link, __lcl__ = lib.lcl.get_lcl_project_info(file, lclpath = lclpath, raises = True)
+    pass
