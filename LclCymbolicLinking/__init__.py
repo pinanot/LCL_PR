@@ -1,5 +1,3 @@
-assert 0, "ver 0.0.1 isn't support"
-
-__version__ = "0.0.1"
+__version__ = "0.0.2" # indev
 
 __all__ = ["__lcl__", "pyxinstall"]
