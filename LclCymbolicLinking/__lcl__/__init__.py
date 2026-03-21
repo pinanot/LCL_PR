@@ -6,7 +6,7 @@ from os.path import isdir as __is_dir__
 from os.path import islink as __is_link__
 from os.path import isfile as __is_file__
 from os.path import realpath as _get_real_path
-from PyPInclude import lib as __lib__
+from PyPInclude import lib
 from martialaw import martialaw as __clsr__
 from time import time as __time__
 from random import random as __random__
@@ -18,11 +18,7 @@ from os import getcwd as __pwd__
 
 __all__ = []
 
-__lib_pw__ = hash(str(__time__() + __random__()))
-
-__libsetter__ = __lib__("lcl", __lib_pw__)
-
-del __lib_pw__
+with scoped_var(salted_pw("I want more better funny pw name")) as lib_pw: __libsetter__ = lib("lcl", lib_pw)
 
 @__wither__
 def enter_directory(dir):
