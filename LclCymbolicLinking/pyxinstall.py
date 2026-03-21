@@ -1,3 +1,3 @@
-from pyximport import install as __initialize__
+from pyximport import install as _initialize
 
-__initialize__()
+_initialize()
