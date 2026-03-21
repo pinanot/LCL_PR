@@ -15,7 +15,6 @@ from sys import argv as __program_param__
 from subprocess import run as __shell__
 from os import chdir as __cd__
 from os import getcwd as __pwd__
-from contextlib import contextmanager as __wither__
 
 __all__ = []
 
