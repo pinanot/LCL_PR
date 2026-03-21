@@ -9,7 +9,7 @@ from os.path import islink as __is_link__
 from os.path import isfile as __is_file__
 from os.path import realpath as __get_real_path__
 from PyPInclude import lib as __lib__
-from martialaw import partial as __partial__
+from martialaw import martialaw as __clsr__
 from functools import wraps as __smart_deco_wraps__
 from time import time as __time__
 from random import random as __random__
@@ -60,7 +60,8 @@ def effected_cythonize(*argv, **kargv):
 def run_setup(__file__):
     with enter_directory(__get_dir__(__file__)) as dirpath: return __shell__(["python", "setup.py"])
 
-def initialize_core(file, *, on_pypi_pkg = True):
+@__clsr__
+def initializef_gen(file, *, on_pypi_pkg = True):
     __PyPInclude__ = __get_dir__(file)
     __lcl__ = __get_dir__(__file__)
     
@@ -73,7 +74,7 @@ def initialize_core(file, *, on_pypi_pkg = True):
     __sym_link__(lcl_pkg_link_path, include)
 
 @-__libsetter__
-@lambda f : __smart_deco_wraps__(f)(partial(initialize_core, on_pypi_pkg = True))
+@fview(initializef_gen(on_pypi_pkg = True))
 def initialize(__file__):
     """
     # function initialize(__file__)
@@ -84,7 +85,7 @@ def initialize(__file__):
     pass
 
 @-__libsetter__
-@lambda f : __smart_deco_wraps__(f)(partial(initialize_core, on_pypi_pkg = False))
+@fview(initializef_gen(on_pypi_pkg = False))
 def init_dir(__file__):
     """
     # function init_dir(__file__)
