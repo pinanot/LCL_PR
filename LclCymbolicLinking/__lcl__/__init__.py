@@ -168,3 +168,5 @@ def uninstall_lclproject(file, *, lclpath = __get_dir__(__file__)):
     pkgname, pkgname_link, __lcl__ = lib.lcl.get_lcl_project_info(file, lclpath = lclpath, raises = True)
     __unlink__(pkgname_link)
     __unlink__(__lcl__)
+
+del __libsetter__
