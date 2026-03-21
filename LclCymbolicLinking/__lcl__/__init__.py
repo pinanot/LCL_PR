@@ -1,6 +1,7 @@
 assert 0, "ver 0.0.1 isn't support"
 
 from os import symlink as __sym_link__
+from os import unlink as __unlink__
 from os.path import dirname as __get_dir__
 from os.path import basename as __base_name__
 from os.path import isdir as __is_dir__
@@ -165,4 +166,5 @@ def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__), raises = Fals
 @-__libsetter__
 def uninstall_lclproject(file, *, lclpath = __get_dir__(__file__)):
     pkgname, pkgname_link, __lcl__ = lib.lcl.get_lcl_project_info(file, lclpath = lclpath, raises = True)
-    pass
+    __unlink__(pkgname_link)
+    __unlink__(__lcl__)
