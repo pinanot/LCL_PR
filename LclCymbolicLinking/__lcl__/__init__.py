@@ -1,14 +1,13 @@
-from os import symlink as __sym_link__
-from os import unlink as __unlink__
-from os.path import dirname as __get_dir__
-from os.path import basename as __base_name__
+from os import symlink as _sym_link
+from os import unlink as _unlink
+from os.path import dirname as _get_dir
+from os.path import basename as _base_name
 from os.path import isdir as __is_dir__
 from os.path import islink as __is_link__
 from os.path import isfile as __is_file__
-from os.path import realpath as __get_real_path__
+from os.path import realpath as _get_real_path
 from PyPInclude import lib as __lib__
 from martialaw import martialaw as __clsr__
-from functools import wraps as __smart_deco_wraps__
 from time import time as __time__
 from random import random as __random__
 from Cython.Build import __cythonize__
@@ -56,20 +55,20 @@ def effected_cythonize(*argv, **kargv):
 
 @-__lib_setter__
 def run_setup(__file__):
-    with enter_directory(__get_dir__(__file__)) as dirpath: return __shell__(["python", "setup.py"])
+    with enter_directory(_get_dir(__file__)) as dirpath: return __shell__(["python", "setup.py"])
 
 @__clsr__
 def initializef_gen(file, *, on_pypi_pkg = True):
-    __PyPInclude__ = __get_dir__(file)
-    __lcl__ = __get_dir__(__file__)
+    __PyPInclude__ = _get_dir(file)
+    __lcl__ = _get_dir(__file__)
     
     include = __path_join__(__PyPInclude__, "include") if on_pypi_pkg else __PyPInclude__
     
     __lcl__linkpath = __path_join__(include, "__lcl__")
-    lcl_pkg_link_path = __path_join__(__lcl__, __base_name__(__dir_name__(__PyPInclude__))) if on_pypi_pkg else __base_name__(__PyPInclude__)
+    lcl_pkg_link_path = __path_join__(__lcl__, _base_name(__dir_name__(__PyPInclude__))) if on_pypi_pkg else _base_name(__PyPInclude__)
     
-    __sym_link__(__lcl__linkpath, __lcl__)
-    __sym_link__(lcl_pkg_link_path, include)
+    _sym_link(__lcl__linkpath, __lcl__)
+    _sym_link(lcl_pkg_link_path, include)
 
 @-__libsetter__
 @fview(initializef_gen(on_pypi_pkg = True))
@@ -93,11 +92,11 @@ def init_dir(__file__):
     
     pass
 
-is_same_real_path = lambda x, y : __get_real_path__(x) == __get_real__path(y)
+is_same_real_path = lambda x, y : _get_real_path(x) == __get_real_path(y)
 is_dir_link = lambda x : __is_link__(x) and __is_dir__(x)
 
 @(-__libsetter__)
-def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__), raises = False):
+def get_lcl_project_info(file, *, lclpath = _get_dir(__file__), raises = False):
     """
     # function get_lcl_project_info(file, *, lclpath = default path, rasies = False)
     
@@ -108,7 +107,7 @@ def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__), raises = Fals
         if type(ret) == tuple: return ret
         else: raise ret
     else:
-        __PyPInclude__ = __get_dir__(file)
+        __PyPInclude__ = _get_dir(file)
         if is_dir_link(
             __lcl__ := __path_join__(
                 __PyPInclude__,
@@ -117,7 +116,7 @@ def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__), raises = Fals
         ) and is_dir_link(
             pkgname_link := __path_join__(
                 lclpath,
-                pkgname := __base_name__(
+                pkgname := _base_name(
                     __PyPInclude__
                 )
             )
@@ -138,8 +137,8 @@ def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__), raises = Fals
         ) and is_dir_link(
             pkgname_link := __path_join__(
                 lclpath,
-                pkgname := __base_name__(
-                    __get_dir__(
+                pkgname := _base_name(
+                    _get_dir(
                         __PyPInclude__
                     )
                 )
@@ -163,9 +162,9 @@ def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__), raises = Fals
     else: return NotLclProjectError(f"{file} is not in lcl project")
 
 @-__libsetter__
-def uninstall_lclproject(file, *, lclpath = __get_dir__(__file__)):
+def uninstall_lclproject(file, *, lclpath = _get_dir(__file__)):
     pkgname, pkgname_link, __lcl__ = lib.lcl.get_lcl_project_info(file, lclpath = lclpath, raises = True)
-    __unlink__(pkgname_link)
-    __unlink__(__lcl__)
+    _unlink(pkgname_link)
+    _unlink(__lcl__)
 
 del __libsetter__
