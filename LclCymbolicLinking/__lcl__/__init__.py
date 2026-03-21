@@ -3,7 +3,13 @@ assert 0, "ver 0.0.1 isn't support"
 from os import symlink as __sym_link__
 from os.path import dirname as __get_dir__
 from os.path import basename as __base_name__
+from os.path import isdir as __is_dir__
+from os.path import islink as __is_link__
+from os.path import isfile as __is_file__
+from os.path import realpath as __get_real_path__
 from PyPInclude import lib as __lib__
+from martialaw import partial as __partial__
+from functools import wraps as __smart_deco_wraps__
 from time import time as __time__
 from random import random as __random__
 from Cython.Build import __cythonize__
@@ -29,7 +35,7 @@ def enter_directory(dir):
         yield __pwd__()
     finally: __cd__(ret)
 
-@(-__libsetter__)
+@-__libsetter__
 def effected_cythonize(*argv, **kargv):
     """
     # function effected_cythonize
@@ -49,19 +55,98 @@ def effected_cythonize(*argv, **kargv):
     
     return cythonize(*argv, **kargv)
 
-@(-__lib_setter__)
+@-__lib_setter__
 def run_setup(__file__):
     with enter_directory(__get_dir__(__file__)) as dirpath: return __shell__(["python", "setup.py"])
 
-@(-__libsetter__)
-def initalize(file):
+def initialize_core(file, *, on_pypi_pkg = True):
     __PyPInclude__ = __get_dir__(file)
     __lcl__ = __get_dir__(__file__)
     
-    include = __path_join__(__PyPInclude__, "include")
+    include = __path_join__(__PyPInclude__, "include") if on_pypi_pkg else __PyPInclude__
     
     __lcl__linkpath = __path_join__(include, "__lcl__")
-    lcl_pkg_link_path = __path_join__(__lcl__, __base_name__(__dir_name__(__PyPInclude__)))
+    lcl_pkg_link_path = __path_join__(__lcl__, __base_name__(__dir_name__(__PyPInclude__))) if on_pypi_pkg else __base_name__(__PyPInclude__)
     
     __sym_link__(__lcl__linkpath, __lcl__)
     __sym_link__(lcl_pkg_link_path, include)
+
+@-__libsetter__
+@lambda f : __smart_deco_wraps__(f)(partial(initialize_core, on_pypi_pkg = True))
+def initialize(__file__):
+    """
+    # function initialize(__file__)
+    """
+    
+    pass
+
+@-__libsetter__
+@lambda f : __smart_deco_wraps__(f)(partial(initialize_core, on_pypi_pkg = False))
+def init_dir(__file__):
+    """
+    # function init_dir(__file__)
+    """
+    
+    pass
+
+is_same_real_path = lambda x, y : __get_real_path__(x) == __get_real__path(y)
+is_dir_link = lambda x : __is_link__(x) and __is_dir__(x)
+
+@(-__libsetter__)
+def get_lcl_project_info(file, *, lclpath = __get_dir__(__file__)):
+    __PyPInclude__ = __get_dir__(file)
+    if is_dir_link(
+        __lcl__ := __path_join__(
+            __PyPInclude__,
+            "__lcl__"
+        )
+    ) and is_dir_link(
+        pkgname_link := __path_join__(
+            lclpath,
+            pkgname := __base_name__(
+                __PyPInclude__
+            )
+        )
+    ):
+        if is_same_real_path(
+            __PyPInclude__,
+            pkgname_link
+        ) and is_same_real_path(
+            lclpath,
+            __lcl__
+        ): return (pkgname, pkgname_link, __lcl__)
+        else: return NotLclProjectError(f"{pkgname} is not lcl project s.t. installed on lcl")
+    elif __is_dir__(
+        include := __path_join__(
+            __PyPInclude__,
+            "include"
+        )
+    ) and is_dir_link(
+        pkgname_link := __path_join__(
+            lclpath,
+            pkgname := __base_name__(
+                __get_dir__(
+                    __PyPInclude__
+                )
+            )
+        )
+    ):
+        if is_dir_link(
+            __lcl__ := __path_join__(
+                include,
+                "__lcl__"
+            )
+        ): 
+            if is_same_real_path(
+                include,
+                pkgname_link
+            ) and is_same_real_path(
+                lclpath,
+                __lcl__
+            ): return (pkgname, pkgname_link, __lcl__)
+            else: return NotLclProjectError(f"{pkgname} is not lcl project s.t. installed on lcl")
+        else: NotLclProjectError(f"{pkgname} is not lcl project s.t. installed on lcl")
+    else: return NotLclProjectError(f"{file} is not in lcl project")
+
+@-__libsetter__
+def 
